@@ -19,5 +19,18 @@ r=$(cat $(date +%m-%d-%Y).txt)
 for i in $2; do
 	r=$(echo "$r" | grep -v "$i")
 done
+#убираю слова в которых нет букв которые есть, но их место неизвестно
+for i in $3; do
+	r=$(echo "$r"| grep $i)
+done
 #отдаю результат
 echo "$r"
+#считаю количество букв для определения наиболее оптимального слова
+alphabet="а б в г д е ё ж з и й к л м н о п р с т у ф х ц ч ш щ ы ь э ю я"
+for i in $alphabet; do
+	n=$(echo "$r" | grep $i | wc -l | sed 's/ //g')
+	if [[ $n == "0" ]]; then
+		continue
+	fi
+	echo "$i - $n"
+done
